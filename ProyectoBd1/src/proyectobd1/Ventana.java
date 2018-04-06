@@ -1,28 +1,27 @@
 package proyectobd1;
 
-
-import java.sql.Connection;
+import java.sql.*;
 
 /**
  *
  * @author Josué Zelaya
  */
-
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-
 
 public class Ventana extends javax.swing.JFrame {
 
     public Ventana() {
         initComponents();
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -32,14 +31,12 @@ public class Ventana extends javax.swing.JFrame {
         tf_fecha_factura = new javax.swing.JTextField();
         tf_RTN = new javax.swing.JTextField();
         tf_direccion = new javax.swing.JTextField();
-        cb_contado = new javax.swing.JCheckBox();
-        cb_credito = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla_productos = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         tf_codigo_producto = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        boton_buscar_producto = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         tf_numerodefactura = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -52,11 +49,12 @@ public class Ventana extends javax.swing.JFrame {
         tf_total_pagar = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         sp_cantidad_producto = new javax.swing.JSpinner();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        boton_imprimir = new javax.swing.JButton();
+        boton_nuevafactura = new javax.swing.JButton();
+        rb_credito = new javax.swing.JRadioButton();
+        rb_contado = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(886, 730));
 
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         jLabel1.setText("TECNOCOP");
@@ -68,10 +66,6 @@ public class Ventana extends javax.swing.JFrame {
         jLabel4.setText("R.T.N:");
 
         jLabel5.setText("Fecha");
-
-        cb_contado.setText("Contado");
-
-        cb_credito.setText("Crédito");
 
         jLabel6.setText("Forma de Pago:");
 
@@ -95,10 +89,15 @@ public class Ventana extends javax.swing.JFrame {
 
         jLabel7.setText("Ingrese el Código del Producto");
 
-        jButton1.setText("Buscar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        boton_buscar_producto.setText("Buscar");
+        boton_buscar_producto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                boton_buscar_productoMouseClicked(evt);
+            }
+        });
+        boton_buscar_producto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                boton_buscar_productoActionPerformed(evt);
             }
         });
 
@@ -114,14 +113,20 @@ public class Ventana extends javax.swing.JFrame {
 
         jLabel13.setText("Cantidad:");
 
-        jButton2.setText("Imprimir");
+        boton_imprimir.setText("Imprimir");
 
-        jButton3.setText("Nueva Factura");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        boton_nuevafactura.setText("Nueva Factura");
+        boton_nuevafactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                boton_nuevafacturaActionPerformed(evt);
             }
         });
+
+        buttonGroup1.add(rb_credito);
+        rb_credito.setText("Crédito");
+
+        buttonGroup1.add(rb_contado);
+        rb_contado.setText("Contado");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -155,10 +160,10 @@ public class Ventana extends javax.swing.JFrame {
                                     .addComponent(tf_RTN))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cb_credito)
                                     .addComponent(jLabel6)
-                                    .addComponent(cb_contado))
-                                .addGap(61, 61, 61))))))
+                                    .addComponent(rb_credito)
+                                    .addComponent(rb_contado))
+                                .addGap(27, 27, 27))))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -170,7 +175,7 @@ public class Ventana extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(tf_codigo_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(40, 40, 40)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(boton_buscar_producto, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(37, 37, 37)
                         .addComponent(jLabel13)
                         .addGap(18, 18, 18)
@@ -179,9 +184,9 @@ public class Ventana extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(72, 72, 72)
-                                .addComponent(jButton3)
+                                .addComponent(boton_nuevafactura)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(boton_imprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,20 +229,20 @@ public class Ventana extends javax.swing.JFrame {
                         .addGap(24, 24, 24)
                         .addComponent(jLabel8))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tf_RTN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cb_credito))
+                        .addComponent(tf_RTN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tf_direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cb_contado))
+                        .addComponent(tf_direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tf_numerodefactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                        .addComponent(tf_numerodefactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(rb_credito)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rb_contado)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(tf_codigo_producto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
+                    .addComponent(boton_buscar_producto)
                     .addComponent(jLabel13)
                     .addComponent(sp_cantidad_producto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -256,38 +261,69 @@ public class Ventana extends javax.swing.JFrame {
                     .addComponent(tf_total_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2))
+                    .addComponent(boton_nuevafactura)
+                    .addComponent(boton_imprimir))
                 .addGap(71, 71, 71))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            String nombre, fecha, direccion;
-            long rtn;
-            int numero_factura, codigo_producto;
-            nombre = tf_nombre_cliente.getText();
-            fecha = tf_fecha_factura.getText();
-            rtn = Long.parseLong(tf_RTN.getText());
-            direccion = tf_direccion.getText();
-            numero_factura = Integer.parseInt(tf_numerodefactura.getText());
-            codigo_producto = Integer.parseInt(tf_codigo_producto.getText());
-            producto.add(new Producto(nombre, fecha, rtn, direccion, numero_factura, codigo_producto));
-            tf_nombre_cliente.setText("");
-            tf_fecha_factura.setText("");
-            tf_RTN.setText("");
-            tf_direccion.setText("");
-            tf_numerodefactura.setText("");
-            tf_codigo_producto.setText("");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Uno de los datos ingresados es incorrecto, favor intente nuevamente");
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void boton_buscar_productoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_buscar_productoActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        String nombre, fecha, direccion, numero_factura, forma_pago;
+        int rtn;
+        int codigo_producto;
+        nombre = tf_nombre_cliente.getText();
+        fecha = tf_fecha_factura.getText();
+        rtn = Integer.parseInt(tf_RTN.getText());
+        direccion = tf_direccion.getText();
+        numero_factura = (tf_numerodefactura.getText());
+        codigo_producto = Integer.parseInt(tf_codigo_producto.getText());
+        if (rb_contado.isSelected()) {
+            forma_pago = "Contado";
+            System.out.println("cont");
+        } else if (rb_credito.isSelected()) {
+            System.out.println("cred");
+            forma_pago = "Crédito";
+        }
+
+        //buscar(tf_codigo_producto.getText());
+    }//GEN-LAST:event_boton_buscar_productoActionPerformed
+
+    private void boton_nuevafacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_nuevafacturaActionPerformed
+        eliminar();
+    }//GEN-LAST:event_boton_nuevafacturaActionPerformed
+
+    private void boton_buscar_productoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_boton_buscar_productoMouseClicked
+
+    }//GEN-LAST:event_boton_buscar_productoMouseClicked
+    public void buscar(String palabra) {
+        if (palabra.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese un dato");
+        }
+        ResultSet res;
+        Statement pstm;
+        Connection con = new Conexion().conectar();
+        String sentencia = "SELECT id_producto FROM Productos WHERE id_producto = '" + palabra + "'";
+        try {
+            pstm = con.createStatement();
+            res = pstm.executeQuery(sentencia);
+            if (res.next()) {
+                JOptionPane.showMessageDialog(null, "Expediente encontrado: " + palabra, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+
+            } else {
+                JOptionPane.showMessageDialog(null, "NO existe el expediente: " + palabra, "Error de expediente", JOptionPane.ERROR_MESSAGE);
+            }
+
+            res.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+    }
+
+    public void eliminar() {
         tf_nombre_cliente.setText("");
         tf_fecha_factura.setText("");
         tf_RTN.setText("");
@@ -295,14 +331,14 @@ public class Ventana extends javax.swing.JFrame {
         tf_numerodefactura.setText("");
         tf_codigo_producto.setText("");
         tabla_productos = null;
-        cb_credito.setSelected(false);
-        cb_contado.setSelected(false);
+        rb_credito.setSelected(false);
+        rb_contado.setSelected(false);
         sp_cantidad_producto.setValue(0);
         tf_efectivo_recibido.setText("");
         tf_devolver.setText("");
         tf_isv.setText("");
         tf_total_pagar.setText("");
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }
 
     public static void main(String args[]) {
         try {
@@ -327,17 +363,16 @@ public class Ventana extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Ventana().setVisible(true);
-                Connection cn=new Conexion().conectar();
+                Connection cn = new Conexion().conectar();
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox cb_contado;
-    private javax.swing.JCheckBox cb_credito;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton boton_buscar_producto;
+    private javax.swing.JButton boton_imprimir;
+    private javax.swing.JButton boton_nuevafactura;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -352,6 +387,8 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton rb_contado;
+    private javax.swing.JRadioButton rb_credito;
     private javax.swing.JSpinner sp_cantidad_producto;
     private javax.swing.JTable tabla_productos;
     private javax.swing.JTextField tf_RTN;

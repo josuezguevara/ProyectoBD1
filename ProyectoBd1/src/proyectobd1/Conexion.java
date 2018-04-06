@@ -24,9 +24,9 @@ public class Conexion {
             
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             cn=DriverManager.getConnection(url, us, pass);
-            JOptionPane.showMessageDialog(null, "Conexion con la conexion de bd");
+            JOptionPane.showMessageDialog(null, "Conexion Exitosa con la Base de Datos");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error con la conexion de bd"+e);
+            JOptionPane.showMessageDialog(null, "Error con la conexion"+e);
         }
         return cn;
     }
