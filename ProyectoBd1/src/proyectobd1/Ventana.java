@@ -5,6 +5,8 @@
  */
 package proyectobd1;
 
+import java.sql.Connection;
+
 /**
  *
  * @author Josué Zelaya
@@ -289,6 +291,7 @@ public class Ventana extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Ventana().setVisible(true);
+                Connection cn=new Conexion().conectar();
             }
         });
     }
