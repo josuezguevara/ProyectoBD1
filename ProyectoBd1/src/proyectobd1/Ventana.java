@@ -74,17 +74,9 @@ public class Ventana extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Código", "Descripción", "Cantidad", "Precio"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-        });
+        ));
         jScrollPane1.setViewportView(tabla_productos);
 
         jLabel7.setText("Ingrese el Código del Producto");
@@ -270,25 +262,29 @@ public class Ventana extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void boton_buscar_productoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_buscar_productoActionPerformed
-
-        String nombre, fecha, direccion, numero_factura, forma_pago;
-        int rtn;
-        int codigo_producto;
-        nombre = tf_nombre_cliente.getText();
-        fecha = tf_fecha_factura.getText();
-        rtn = Integer.parseInt(tf_RTN.getText());
-        direccion = tf_direccion.getText();
-        numero_factura = (tf_numerodefactura.getText());
-        codigo_producto = Integer.parseInt(tf_codigo_producto.getText());
-        if (rb_contado.isSelected()) {
-            forma_pago = "Contado";
-            System.out.println("cont");
-        } else if (rb_credito.isSelected()) {
-            System.out.println("cred");
-            forma_pago = "Crédito";
+        try {
+            String nombre, fecha, direccion, numero_factura, forma_pago;
+            int rtn;
+            int codigo_producto;
+            nombre = tf_nombre_cliente.getText();
+            fecha = tf_fecha_factura.getText();
+            rtn = Integer.parseInt(tf_RTN.getText());
+            direccion = tf_direccion.getText();
+            numero_factura = (tf_numerodefactura.getText());
+            codigo_producto = Integer.parseInt(tf_codigo_producto.getText());
+            if (rb_contado.isSelected()) {
+                forma_pago = "Contado";
+                //System.out.println("cont");
+            } else if (rb_credito.isSelected()) {
+                //System.out.println("cred");
+                forma_pago = "Crédito";
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos");
         }
 
-        //buscar(tf_codigo_producto.getText());
+        buscar(tf_codigo_producto.getText());
+        eliminar();
     }//GEN-LAST:event_boton_buscar_productoActionPerformed
 
     private void boton_nuevafacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_nuevafacturaActionPerformed
@@ -299,6 +295,7 @@ public class Ventana extends javax.swing.JFrame {
 
     }//GEN-LAST:event_boton_buscar_productoMouseClicked
     public void buscar(String palabra) {
+
         if (palabra.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ingrese un dato");
         }
@@ -312,6 +309,42 @@ public class Ventana extends javax.swing.JFrame {
             if (res.next()) {
                 JOptionPane.showMessageDialog(null, "Expediente encontrado: " + palabra, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
 
+                Statement st = con.createStatement();
+                String mysql = "SELECT * FROM Productos WHERE id_producto = '" + palabra + "'";
+                ResultSet rs = st.executeQuery(mysql);
+                String Titulo[] = {"Codigo", "Descripcion", "Cantidad", "Precio"};
+                DefaultTableModel modelo = new DefaultTableModel(null, Titulo);
+
+                int i;
+                Object[] fila = new Object[4];
+                while (rs.next()) {
+                    // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+                    for (i = 0; i < 4; i++) {
+                        fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+                        //aquí lo mando a imprimir por consola y si sale
+                        //System.out.println(fila[i]);
+                    }
+                    // Se añade al modelo la fila completa.
+                    fila[2] = sp_cantidad_producto.getValue();
+                    modelo.addRow(fila);
+                }
+                tabla_productos.setModel(modelo);
+                /*int fila1 = tabla_productos.getRowCount();
+                int i1;
+                int valores = 0;
+                for (i1 = 0; i1 < fila1; i1++) {
+                    int valor = (int) tabla_productos.getValueAt(i1, 3);
+                    valores += valor;
+                    // Con esta condición solo ponemos comas hasta el penúltimo valor :)
+                   /*if (i1 < (fila1 - 1)) {
+                     valores += ", ";
+                     }
+                }
+                String valor1 = "";
+                valor1 = String.valueOf(valores);
+
+                valor1 = Integer.toString(valores);
+                tf_total_pagar.setText(valor1)*/; 
             } else {
                 JOptionPane.showMessageDialog(null, "NO existe el expediente: " + palabra, "Error de expediente", JOptionPane.ERROR_MESSAGE);
             }
@@ -338,6 +371,7 @@ public class Ventana extends javax.swing.JFrame {
         tf_devolver.setText("");
         tf_isv.setText("");
         tf_total_pagar.setText("");
+        sp_cantidad_producto.setValue(0);
     }
 
     public static void main(String args[]) {
